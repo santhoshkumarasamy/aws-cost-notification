@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates lambda requirements
+Resources:
+  s3bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: sns-function-files
+  s3bucketpolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref s3bucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: 
+              - 's3:*'
+            Resource:
+              !Join
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref s3bucket
+                  - '/*'
